@@ -1567,11 +1567,65 @@ ${data.structure.references}
     return lastSubmittedRecordData || live;
   }
 
+  // ==========================================
+  // SUPABASE CONFIGURATION & REALTIME SYNC
+  // ==========================================
+  const SUPABASE_PROJECT_REF = 'sehyhpwulwgwonhqvssm';
+  const SUPABASE_URL = `https://${SUPABASE_PROJECT_REF}.supabase.co`;
+  const SUPABASE_ANON_KEY = 'PASTE_YOUR_ANON_KEY_HERE';
+
+  let supabaseClient = null;
+  function getSupabaseClient() {
+    if (!supabaseClient && typeof window.supabase !== 'undefined' && SUPABASE_ANON_KEY && SUPABASE_ANON_KEY !== 'PASTE_YOUR_ANON_KEY_HERE') {
+      try {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      } catch (err) {
+        console.warn('Supabase init error:', err);
+      }
+    }
+    return supabaseClient;
+  }
+
+  async function saveIntakeToSupabase(data) {
+    const client = getSupabaseClient();
+    if (!client) {
+      console.log('Supabase client pending anon key.');
+      return;
+    }
+
+    try {
+      const subId = `ALIE-INTAKE-${Date.now()}`;
+      const payload = {
+        submission_id: subId,
+        client_name: data.branding?.name || 'Unnamed Client',
+        official_email: data.contact?.email || '',
+        phone_whatsapp: data.contact?.phone || '',
+        account_type: data.account?.type || '',
+        raw_data: data
+      };
+
+      const { error } = await client
+        .from('client_submissions')
+        .insert([payload]);
+
+      if (error) {
+        console.error('Supabase save error:', error);
+      } else {
+        console.log('Successfully saved to Supabase:', subId);
+      }
+    } catch (e) {
+      console.error('Supabase exception:', e);
+    }
+  }
+
   // Primary: Handle Full WhatsApp submission and automatic clearing
   document.getElementById('btnSendWhatsApp')?.addEventListener('click', (e) => {
     e.preventDefault();
     const data = gatherFormData();
     lastSubmittedRecordData = data;
+
+    // Asynchronously log and save into Supabase database
+    saveIntakeToSupabase(data);
 
     // Generate comprehensive WhatsApp text with 100% of the client's filled data
     const fullMsg = generateCompleteWhatsAppMessage(data);
