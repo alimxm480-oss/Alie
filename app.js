@@ -1572,7 +1572,7 @@ ${data.structure.references}
   // ==========================================
   const SUPABASE_PROJECT_REF = 'sehyhpwulwgwonhqvssm';
   const SUPABASE_URL = `https://${SUPABASE_PROJECT_REF}.supabase.co`;
-  const SUPABASE_ANON_KEY = 'PASTE_YOUR_ANON_KEY_HERE';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlaHlocHd1bHdnd29uaHF2c3NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyODQxODgsImV4cCI6MjEwNDg2MDE4OH0.xUMdTdhubH_w40bgD9LDjjLTnYGsDowxlUAerkjte_Q';
 
   let supabaseClient = null;
   function getSupabaseClient() {
