@@ -735,7 +735,7 @@ document.addEventListener('DOMContentLoaded', () => {
         existingUrl: document.getElementById('existingSiteUrl')?.value || '',
         domainStatus: 'Already Own Domain',
         deadline: document.getElementById('targetLaunchDate')?.value || '',
-        references: document.getElementById('referenceSites')?.value || '',
+        references: 'Template-based build',
         copyStatus: document.getElementById('copyStatus')?.value || ''
       },
       policy: {
@@ -944,8 +944,6 @@ ${data.faqs.map((f, i) => `**Q${i+1}: ${f.q}**\n* ${f.a}`).join('\n\n')}
 * **Pages Required:** ${data.structure.pages.join(', ')}
 * **Website Build Type:** ${data.structure.existingStatus} ${data.structure.existingUrl ? `(${data.structure.existingUrl})` : ''}
 * **Target Launch Date:** ${data.structure.deadline}
-* **Reference Websites:**
-${data.structure.references}
 * **Website Copy Status:** ${data.structure.copyStatus}
 
 ---
@@ -1107,10 +1105,6 @@ ${data.structure.references}
     lines.push(`• *Build Status:* ${data.structure.existingStatus}`);
     if (data.structure.existingUrl) lines.push(`• *Existing Website:* ${data.structure.existingUrl}`);
     lines.push(`• *Target Launch Date:* ${data.structure.deadline || 'Flexible'}`);
-    if (data.structure.references) {
-      lines.push(`• *Reference Websites:*`);
-      lines.push(`  ${data.structure.references}`);
-    }
     lines.push(`• *Website Copy Status:* ${data.structure.copyStatus}`);
     lines.push(``);
 
@@ -1499,7 +1493,7 @@ ${data.structure.references}
       'contactEmail', 'contactPhone', 'contactAddress', 'businessHours',
       'socialInstagram', 'socialLinkedin', 'socialTwitter', 'socialBehance',
       'founderName', 'founderTitle', 'personalImagesLink', 'founderBio',
-      'existingSiteUrl', 'targetLaunchDate', 'referenceSites', 'clientSignatureName'
+      'existingSiteUrl', 'targetLaunchDate', 'clientSignatureName'
     ];
     textFieldsToClear.forEach(id => {
       const el = document.getElementById(id);
@@ -1863,7 +1857,6 @@ ${data.structure.references}
         if (d.structure.existingStatus) document.getElementById('existingSiteStatus').value = d.structure.existingStatus;
         if (d.structure.existingUrl) document.getElementById('existingSiteUrl').value = d.structure.existingUrl;
         if (d.structure.deadline) document.getElementById('targetLaunchDate').value = d.structure.deadline;
-        if (d.structure.references) document.getElementById('referenceSites').value = d.structure.references;
         if (d.structure.copyStatus) document.getElementById('copyStatus').value = d.structure.copyStatus;
       }
 
