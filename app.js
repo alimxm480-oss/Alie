@@ -429,30 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
     triggerAutosave();
   });
 
-  // 4. FAQs Repeater (Min 5 pre-loaded)
-  const defaultFaqs = [
-    {
-      q: 'What is your turnaround time for a custom portfolio website?',
-      a: 'Our typical design & development sprint takes 5 to 7 business days from the moment all assets and copy are provided.'
-    },
-    {
-      q: 'How does your payment and milestone structure work?',
-      a: 'We require a 50% upfront deposit to initiate the project sprint, with the remaining 50% due upon final approval and live deployment.'
-    },
-    {
-      q: 'What do you require from clients before starting the build?',
-      a: 'We require completion of this intake portal, high-resolution logo files, at least 2 case studies with 4+ images, and preferred reference links.'
-    },
-    {
-      q: 'Do you offer post-launch support and revisions?',
-      a: 'Yes! We include up to 3 small revision rounds within 2 days of delivery, plus 14 days of technical launch support.'
-    },
-    {
-      q: 'What industries or design aesthetics do you specialize in?',
-      a: 'We specialize in modern digital aesthetics for creative agencies, technology founders, design studios, and high-growth personal brands.'
-    }
-  ];
-
+  // 4. Custom FAQs Repeater (User-Entered)
   function renderFaqCard(index, data = {}) {
     const card = document.createElement('div');
     card.className = 'repeater-card faq-card';
@@ -460,7 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="repeater-card-header">
         <div class="repeater-item-title">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-          <span>FAQ 0${index + 1}</span>
+          <span class="faq-title-label">FAQ 0${index + 1}</span>
         </div>
         <button type="button" class="btn-remove-item btn-remove-faq" title="Remove FAQ">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -476,18 +453,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <div class="col-12 form-group">
           <label class="form-label"><span>Answer <span class="required">*</span></span></label>
-          <textarea class="form-control faq-answer" rows="2" placeholder="Write a clear, reassuring answer..." required>${data.a || ''}</textarea>
+          <textarea class="form-control faq-answer" rows="2" placeholder="Write your answer..." required>${data.a || ''}</textarea>
         </div>
       </div>
     `;
 
     card.querySelector('.btn-remove-faq').addEventListener('click', () => {
       const allFaqs = faqContainer.querySelectorAll('.faq-card');
-      if (allFaqs.length <= 5) {
-        showToast('A minimum of 5 FAQs is required.', 'error');
+      if (allFaqs.length <= 1) {
+        showToast('At least 1 FAQ is required.', 'error');
         return;
       }
       card.remove();
+      updateFaqIndices();
       triggerAutosave();
     });
 
@@ -498,9 +476,19 @@ document.addEventListener('DOMContentLoaded', () => {
     return card;
   }
 
+  function updateFaqIndices() {
+    faqContainer.querySelectorAll('.faq-card').forEach((card, i) => {
+      const label = card.querySelector('.faq-title-label');
+      if (label) {
+        label.textContent = `FAQ 0${i + 1}`;
+      }
+    });
+  }
+
   btnAddFaq.addEventListener('click', () => {
     const current = faqContainer.querySelectorAll('.faq-card').length;
-    faqContainer.appendChild(renderFaqCard(current));
+    faqContainer.appendChild(renderFaqCard(current, { q: '', a: '' }));
+    updateFaqIndices();
     triggerAutosave();
   });
 
@@ -595,8 +583,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (currentStep === 6) {
       const faqs = faqContainer.querySelectorAll('.faq-card');
-      if (faqs.length < 5) {
-        showToast('Please provide at least 5 FAQs.', 'error');
+      if (faqs.length < 1) {
+        showToast('Please provide at least 1 FAQ question & answer.', 'error');
         return false;
       }
     }
@@ -745,7 +733,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pages: checkedPages,
         existingStatus: document.getElementById('existingSiteStatus')?.value || '',
         existingUrl: document.getElementById('existingSiteUrl')?.value || '',
-        domainStatus: document.getElementById('domainStatus')?.value || '',
+        domainStatus: 'Already Own Domain',
         deadline: document.getElementById('targetLaunchDate')?.value || '',
         references: document.getElementById('referenceSites')?.value || '',
         copyStatus: document.getElementById('copyStatus')?.value || ''
@@ -955,7 +943,6 @@ ${data.faqs.map((f, i) => `**Q${i+1}: ${f.q}**\n* ${f.a}`).join('\n\n')}
 * **Case Study Structure:** ${data.structure.choice}
 * **Pages Required:** ${data.structure.pages.join(', ')}
 * **Website Build Type:** ${data.structure.existingStatus} ${data.structure.existingUrl ? `(${data.structure.existingUrl})` : ''}
-* **Domain Status:** ${data.structure.domainStatus}
 * **Target Launch Date:** ${data.structure.deadline}
 * **Reference Websites:**
 ${data.structure.references}
@@ -1119,7 +1106,6 @@ ${data.structure.references}
     lines.push(`• *Pages Required:* ${data.structure.pages.join(', ') || 'Home'}`);
     lines.push(`• *Build Status:* ${data.structure.existingStatus}`);
     if (data.structure.existingUrl) lines.push(`• *Existing Website:* ${data.structure.existingUrl}`);
-    lines.push(`• *Domain Status:* ${data.structure.domainStatus}`);
     lines.push(`• *Target Launch Date:* ${data.structure.deadline || 'Flexible'}`);
     if (data.structure.references) {
       lines.push(`• *Reference Websites:*`);
@@ -1876,7 +1862,6 @@ ${data.structure.references}
         }
         if (d.structure.existingStatus) document.getElementById('existingSiteStatus').value = d.structure.existingStatus;
         if (d.structure.existingUrl) document.getElementById('existingSiteUrl').value = d.structure.existingUrl;
-        if (d.structure.domainStatus) document.getElementById('domainStatus').value = d.structure.domainStatus;
         if (d.structure.deadline) document.getElementById('targetLaunchDate').value = d.structure.deadline;
         if (d.structure.references) document.getElementById('referenceSites').value = d.structure.references;
         if (d.structure.copyStatus) document.getElementById('copyStatus').value = d.structure.copyStatus;
@@ -1935,9 +1920,9 @@ ${data.structure.references}
 
   function initDefaultFaqs() {
     faqContainer.innerHTML = '';
-    defaultFaqs.forEach((item, i) => {
-      faqContainer.appendChild(renderFaqCard(i, item));
-    });
+    faqContainer.appendChild(renderFaqCard(0, { q: '', a: '' }));
+    faqContainer.appendChild(renderFaqCard(1, { q: '', a: '' }));
+    updateFaqIndices();
   }
 
   function initDefaultRepeaters() {
