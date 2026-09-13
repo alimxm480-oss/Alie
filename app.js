@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // State
   let currentStep = 1;
+  let isInitialLoad = true;
   const totalSteps = 11;
   const STORAGE_KEY = 'alie_creatives_intake_draft_v1';
 
@@ -545,11 +546,14 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }
 
-    // Scroll gently to top of intake wrapper
-    const intakeSection = document.getElementById('intake');
-    if (intakeSection) {
-      intakeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Scroll gently to top of intake wrapper when switching steps
+    if (!isInitialLoad) {
+      const intakeSection = document.getElementById('intake');
+      if (intakeSection) {
+        intakeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
+    isInitialLoad = false;
   }
 
   function validateCurrentStep() {

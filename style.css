@@ -1053,17 +1053,24 @@ textarea.form-control {
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .input-icon {
   position: absolute;
-  left: 15px;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--text-muted);
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
 }
 
 .input-with-icon .form-control {
-  padding-left: 44px;
+  padding-left: 48px !important;
 }
 
 /* Color Picker Row */
@@ -1075,6 +1082,7 @@ textarea.form-control {
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-md);
   padding: 8px 14px;
+  min-height: 48px;
 }
 
 .color-input-bubble {
@@ -1083,10 +1091,12 @@ textarea.form-control {
   appearance: none;
   width: 34px;
   height: 34px;
+  min-width: 34px;
   background-color: transparent;
   border: none;
   cursor: pointer;
   border-radius: 50%;
+  padding: 0;
 }
 
 .color-input-bubble::-webkit-color-swatch-wrapper { padding: 0; }
@@ -1097,7 +1107,8 @@ textarea.form-control {
 
 .color-hex-text {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 16px !important;
+  font-weight: 700;
   background: transparent;
   border: none;
   color: var(--text-strong);
@@ -1684,14 +1695,15 @@ textarea.form-control {
   justify-content: center;
   gap: 14px;
   width: 100%;
-  max-width: 620px;
-  padding: 18px 32px;
+  max-width: 680px;
+  min-height: 56px;
+  padding: 16px 32px;
   background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
   color: #ffffff;
   border: none;
   border-radius: var(--radius-md);
   font-family: var(--font-heading);
-  font-size: 1.08rem;
+  font-size: 1.05rem;
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
@@ -1699,6 +1711,8 @@ textarea.form-control {
   transition: all var(--transition-base);
   position: relative;
   overflow: hidden;
+  text-align: center;
+  line-height: 1.35;
 }
 
 .btn-primary-whatsapp-submit:hover {
@@ -1712,34 +1726,39 @@ textarea.form-control {
 }
 
 .submit-note {
-  margin-top: 10px;
+  margin-top: 12px;
   font-size: 0.82rem;
   color: var(--text-weak);
+  line-height: 1.5;
 }
 
 .secondary-actions-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin: 16px 0 24px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 680px;
+  margin: 20px auto 28px;
+  gap: 12px;
 }
 
 .btn-secondary-action {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 18px;
   background: var(--bg-surface-elevated);
   color: var(--text-strong);
   border: 1px solid var(--border-medium);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition-fast);
+  text-align: center;
+  line-height: 1.3;
 }
 
 .btn-secondary-action:hover {
@@ -2218,19 +2237,22 @@ textarea.form-control {
 }
 
 .btn-nav-prev {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
   padding: 12px 24px;
   background: transparent;
   border: 1px solid var(--border-medium);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   color: var(--text-medium);
   font-family: var(--font-body);
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
   transition: var(--transition-fast);
+  line-height: 1;
 }
 
 .btn-nav-prev:hover {
@@ -2241,20 +2263,23 @@ textarea.form-control {
 .btn-nav-prev:disabled { opacity: 0.3; cursor: not-allowed; }
 
 .btn-nav-next {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
   padding: 12px 28px;
   background: var(--text-strong);
   color: var(--text-inverse);
   border: none;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   font-family: var(--font-body);
   font-size: 0.92rem;
   font-weight: 700;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
   transition: var(--transition-fast);
   box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
+  line-height: 1;
 }
 
 .btn-nav-next:hover {
@@ -2263,18 +2288,22 @@ textarea.form-control {
 }
 
 .btn-save-draft {
-  padding: 12px 18px;
-  background: transparent;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-full);
-  color: var(--text-muted);
-  font-size: 0.86rem;
-  font-weight: 600;
-  cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  min-height: 48px;
+  padding: 12px 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-medium);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
   transition: var(--transition-fast);
+  line-height: 1;
 }
 
 .btn-save-draft:hover {
@@ -2606,6 +2635,17 @@ textarea.form-control {
     padding: 13px 14px;
     min-height: 48px;
     border-radius: var(--radius-md);
+  }
+  .input-with-icon .form-control {
+    padding-left: 48px !important;
+  }
+  .input-icon {
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .color-hex-text {
+    font-size: 16px !important;
   }
   textarea.form-control {
     min-height: 100px;
